@@ -3,7 +3,7 @@ from copy import deepcopy
 
 groupNumber = 11
 groupName = {'Person 1 name' : 'Person 1 Username',\
-             'Person 2 name' : 'Person 2 Username',\
+             'Maciej Wdowin' : '5682215',\
              'Emilyne Mohd Ruzaimi' : '5725919',\
              'Person 4 name' : 'Person 4 Username'}
 
