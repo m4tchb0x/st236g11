@@ -231,6 +231,35 @@ def printBoard(board, showSubs=False, showSubNum=False);
 ###############################################################################
 # Task 5
 
+class IndexOutofRange(Expection):
+  '''Raised when an index does not refer to a cube on the board.'''
+  pass
+
+def indexToPos(ind):
+  '''
+  Input: ind [list] a list of three integers [i, j, k], where 
+         i represents the column index
+         j represents the row index
+         k represents the level index
+
+  Output: [str] the corresponding cube position in the form 'Xxn',
+          where X is in {A,B,C,D,E}, x is in {a,b,c,d,e}
+          and n is in {1,2,3,4,5}.
+
+  Exceptions: IndexOutofRange if ind is not a list of three integers or if any index
+              is outside the range 0 to 4.
+  '''
+
+if not isinstance(ind, list) or len(ind) != 3:
+  raise IndexOutofRange('Input must be a list of three integers.')
+
+for value in ind:
+  if type(value) is not int or value not in range(5):
+    raise IndexOutofRange('Each index must be an integer from 0 to 4.')
+
+i, j, k = ind
+
+return 'ABCDE'[i] + 'abcde'[j] + str(k+1)
 ###############################################################################
 
 
