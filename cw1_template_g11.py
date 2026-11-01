@@ -169,6 +169,62 @@ def placeSubs(board, name, pos):
 ###############################################################################
 # Task 4
 
+def printBoard(board, showSubs=False, showSubNum=False);
+  '''
+  Input:  board [list] a 5x5 game board with index [k][j][i].
+          showSubs [bool] whether submarines are shown on the board. 
+          showSubNum [bool] whether submarine numbers are displayed. 
+          Both optional arguments default to False.
+          
+  Output:  [str] the formatted board showing all 5 layers side by side
+           If showSubs is False - unhit submarines are hidden.
+           If showSubNum is False - submarine numbers are not displayed.
+           Empty cubes are represented by blank spaces.
+           
+  Expectations: [none] for a valid game board.
+  '''
+  lines = []
+  titles = []
+  columns = []
+  borders = []
+
+  # Create the headings and rows for each layer
+  for k in range(5):
+    titles.append(f'{"Layer" + str(k + 1):^17}')
+    columns.append('  |A |B |C |D |E ')
+    borders.append('--+--+--+--+--+--')
+
+  lines.append(' | '.join(titles))
+  lines.append(' | '.join(columns))
+  lines.append(' | '.join(borders))
+
+  # Build each row across all five layers
+  for j in range(5):
+    rows = []
+    
+    for k in range(5):
+      row = 'abcde'[j] + ' |'
+      
+      for i in range(5):
+        cell = board[k][j][i]
+        
+        if cell == 0:
+          display = ''
+        elif cell[0] == 'S' and not showSubs:
+          display = ''
+        elif not showSubNum:
+          display = cell[0]
+        else:
+          display = cell
+          
+        row += f'{display:<2}|'
+        
+      rows.append(row[:-1])
+      
+    lines.append(' | '.join(rows))
+    
+  return '\n'.join(lines)
+      
 ###############################################################################
 
 
