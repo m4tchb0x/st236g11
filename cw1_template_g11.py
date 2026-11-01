@@ -204,7 +204,45 @@ def placeSubs(board, name, pos):
 
 ###############################################################################
 # Task 10
-
+def isWinner(game):
+    '''
+    Parameters:
+        game: Dictionary which contains keys called 'Player 1 Board' and 'Player 2 Board'.
+            Each of the values for those keys is a 5x5x5 3D array.
+            At least one of those arrays contains one of the following 'critical strings': 'S1', 'S2', 'S3', 'S4', 'S5'.
+    Returns:
+        An integer. Either 0 or 1 or 2 depending on the contents of the arrays.
+        0 is returned iff both arrays contain any of the critical strings as one of their elements.
+        This indicates that neither player has won the game yet.
+        1 is returned iff the array with key 'Player 2 Board' doesn't contain any of the critical strings.
+        This indicates that player 1 has won the game.
+        2 is returned iff only the array with key 'Player 2 Board' contains any of the critical strings.
+        This indicates that player 2 has won the game.
+      Exceptions:
+        None
+    '''
+    # Set of the strings which indicate that there are still unsunk subs on a player's board
+    unsunk = {'S1', 'S2', 'S3', 'S4', 'S5'} 
+    # Boolean flags to indicate whether or not a specific player has won yet
+    # We can assume that both players have won simultaneously to begin with because at least one of the arrays contains a critical string
+    player1win = True
+    player2win = True
+    # Searches every valid index in the 3D arrays
+    for i in range(5):
+        for j in range(5):
+            for k in range(5):
+                # If an element in a board contains any unsunk parts of a sub, then their opponent can't have won yet
+                if (game['Player 1 Board'][i][j][k] in unsunk):
+                    player2win = False
+                if (game['Player 2 Board'][i][j][k] in unsunk):
+                    player1win = False
+    # Checks the flags and returns the corresponding integer
+    if player1win:
+        return 1
+    elif player2win:
+        return 2
+    else:
+        return 0
 ###############################################################################
 
 
