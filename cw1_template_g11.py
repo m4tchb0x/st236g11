@@ -169,7 +169,7 @@ def placeSubs(board, name, pos):
 ###############################################################################
 # Task 4
 
-def printBoard(board, showSubs=False, showSubNum=False);
+def printBoard(board, showSubs=False, showSubNum=False):
   '''
   Input:  board [list] a 5x5 game board with index [k][j][i].
           showSubs [bool] whether submarines are shown on the board. 
@@ -250,16 +250,16 @@ def indexToPos(ind):
               is outside the range 0 to 4.
   '''
 
-if not isinstance(ind, list) or len(ind) != 3:
-  raise IndexOutofRange('Input must be a list of three integers.')
+  if not isinstance(ind, list) or len(ind) != 3:
+    raise IndexOutofRange('Input must be a list of three integers.')
 
-for value in ind:
-  if type(value) is not int or value not in range(5):
-    raise IndexOutofRange('Each index must be an integer from 0 to 4.')
+  for value in ind:
+    if type(value) is not int or value not in range(5):
+      raise IndexOutofRange('Each index must be an integer from 0 to 4.')
 
-i, j, k = ind
+  i, j, k = ind
 
-return 'ABCDE'[i] + 'abcde'[j] + str(k+1)
+  return 'ABCDE'[i] + 'abcde'[j] + str(k+1)
 ###############################################################################
 
 
