@@ -231,7 +231,7 @@ def printBoard(board, showSubs=False, showSubNum=False):
 ###############################################################################
 # Task 5
 
-class IndexOutofRange(Expection):
+class IndexOutofRange(Exception):
   '''Raised when an index does not refer to a cube on the board.'''
   pass
 
