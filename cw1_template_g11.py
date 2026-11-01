@@ -5,7 +5,7 @@ groupNumber = 11
 groupName = {'Vihar Reddy' : '5715484',\
              'Maciej Wdowin' : '5682215',\
              'Emilyne Mohd Ruzaimi' : '5725919',\
-             'Person 4 name' : 'Person 4 Username'}
+             'Oliver Stevens' : '5685258'}
 
 
 ###############################################################################
