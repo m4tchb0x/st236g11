@@ -266,12 +266,57 @@ def indexToPos(ind):
 ###############################################################################
 # Task 6
 
+def saveGame(game, fname):
+    
+    with open(fname, 'w', newline='') as gamefile:
+        writer = csv.writer(gamefile)
+        writer.writerow(['Player 1', game['Player 1']])
+        writer.writerow(['Player 2', game['Player 2']]) #writes csv, names players and other relevant stuff before the table
+        writer.writerow(['Who', game['Who']])
+        writer.writerow(['ShowSubs'] + list(game['ShowSubs']))
+
+        for player in ('Player 1', 'Player 2'):
+            writer.writerow([player + ' Board'])
+            board = game[player + ' Board']
+            for k in range(5): #k = 0 is rows 1-5, etc
+                for j in range(5): #for each of these 5 things, there are 5 rows^^ making 25 rows w/ same columns
+                    writer.writerow(board[k][j])
 ###############################################################################
 
 
 ###############################################################################
 # Task 7
 
+def loadGame(fname):
+    #we want to reverse the csv back into the game dict
+    with open(fname, 'r', newline='') as gamefile:
+        rows = [] #rows --> list of rows
+        for row in csv.reader(gamefile):
+            rows.append(row) #sorts out formatting, csvs will be distinct list items
+
+    game = {}
+    game['Player 1'] = rows[0][1]
+    game['Player 2'] = rows[1][1] #give players names
+    game['Who'] = int(rows[2][1])
+    game['ShowSubs'] = [int(value) for value in rows[3][1:] if value != ''] 
+
+    row_index = 4 #goes to p1 board title
+    for player in ('Player 1', 'Player 2'): 
+        row_index += 1 #skips past the title
+        board = []
+        for k in range(5):
+            layer = []
+            for j in range(5): #each 'level' has 5 rows, as before
+                values = rows[row_index] #all the vals 
+                row_index += 1
+                if len(values) == 1 and values[0] == '': #blank row of csvs = EMPTY cells
+                    values = []
+                values = [value.strip() for value in values]
+                layer.append([0 if value == '0' else value for value in values])
+            board.append(layer)
+        game[player + ' Board'] = board #the game dict is now rebuilt, effectively reversing before
+
+    return game
 ###############################################################################
 
 
