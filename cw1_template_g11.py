@@ -324,13 +324,12 @@ def loadGame(fname):
 # Task 8
 
 def findValidMoves(board):
-    # A cube is still available if it contains water (0) or an unhit sub.
     moves = []
     for k in range(5):
         for j in range(5):
             for i in range(5):
                 cell = board[k][j][i]
-                if cell == 0 or cell in ('S1', 'S2', 'S3', 'S4', 'S5'):
+                if cell == 0 or cell in ('S1', 'S2', 'S3', 'S4', 'S5'): #only counts as available if contains water or an unhit sub
                     moves.append('ABCDE'[i] + 'abcde'[j] + str(k + 1))
     return moves
 
@@ -390,11 +389,10 @@ def isWinner(game):
 ###############################################################################
 # Task 11
 
-def suggestMove(board):
-    # Any not-yet-fired-at position is a valid suggestion.
+def suggestMove(board): #similar to task 8
     moves = findValidMoves(board)
     if moves:
-        return moves[0]
+        return moves[0] #gives the first available, possible move
     return None
 
 ###############################################################################
