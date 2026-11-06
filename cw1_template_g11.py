@@ -190,7 +190,7 @@ def printBoard(board, showSubs=False, showSubNum=False):
 
   # Create the headings and rows for each layer
   for k in range(5):
-    titles.append(f'{"Layer" + str(k + 1):^17}')
+    titles.append(f'{"Layer " + str(k + 1):^17}')
     columns.append('  |A |B |C |D |E ')
     borders.append('--+--+--+--+--+--')
 
@@ -231,7 +231,7 @@ def printBoard(board, showSubs=False, showSubNum=False):
 ###############################################################################
 # Task 5
 
-class IndexOutofRange(Exception):
+class IndexOutOfRange(Exception):
   '''Raised when an index does not refer to a cube on the board.'''
   pass
 
@@ -246,16 +246,16 @@ def indexToPos(ind):
           where X is in {A,B,C,D,E}, x is in {a,b,c,d,e}
           and n is in {1,2,3,4,5}.
 
-  Exceptions: IndexOutofRange if ind is not a list of three integers or if any index
+  Exceptions: IndexOutOfRange if ind is not a list of three integers or if any index
               is outside the range 0 to 4.
   '''
 
   if not isinstance(ind, list) or len(ind) != 3:
-    raise IndexOutofRange('Input must be a list of three integers.')
+    raise IndexOutOfRange('Input must be a list of three integers.')
 
   for value in ind:
     if type(value) is not int or value not in range(5):
-      raise IndexOutofRange('Each index must be an integer from 0 to 4.')
+      raise IndexOutOfRange('Each index must be an integer from 0 to 4.')
 
   i, j, k = ind
 
@@ -339,6 +339,62 @@ def findValidMoves(board):
 ###############################################################################
 # Task 9
 
+class MoveNotMade(Exception):
+  '''Only raised when a move is invalid or cube has already been fired at.'''
+  pass
+
+def makeMove(game, move):
+  '''
+  Input:  game [dict] the current game dictionary
+          move [str] the cube to shoot at
+
+  Output: [dict] a new game dictionary with the opponent's board updated and 
+          next player's turn being set. Meanwhile, original game is unchanged.
+
+  Exceptions: MoveNotMade if the cube reference is invalid or the cube has 
+              already been fired at.
+  '''
+
+  # Convert the cube reference to board indices
+  try:
+    i, j, k = posToIndex(move)
+  except (InvalidInputFormat, OutOfBoundsError):
+    raise MoveNotMade('Invalid cube reference.')
+
+  # Player 1 shoots at Player 2's board and vice versa
+  if game['Who'] == 1:
+    boardName = 'Player 2 Board'
+    nextPlayer = 2
+  elif game['Who'] == 2:
+    boardName = 'Player 1 Board'
+    nextPlayer = 1
+  else:
+    raise MoveNotMade('Invalid player turn.')
+
+  board = game[boardName]
+
+  # Check whether the cube is available for shooting
+  validMoves = findValidMoves(board)
+  position = indexToPos([i, j, k])
+
+  if position not in validMoves:
+    raise MoveNotMade('This cube has already been fired at.')
+
+  # Create a separate copy so the original game remains unchanged
+  newgame = deepcopy(game)
+
+  # Record a hit or a miss
+  cell = board[k][j][i]
+
+  if cell == 0:
+    newgame[boardName][k][j][i] = 'M'
+  else:
+    newgame[boardName][k][j][i] = 'H' + cell[1:]
+
+  # Switch to the next player
+  newgame['Who'] = nextPlayer
+
+  return newgame
 ###############################################################################
 
 
