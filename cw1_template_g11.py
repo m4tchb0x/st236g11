@@ -523,11 +523,9 @@ def playGame():
                 else:
                     moveMade = True
         # Print the new game board
-        print(printBoard(game['Player '+ str(game['Who']%2 + 1)+' Board']))
+        print(printBoard(game['Player '+ str(game['Who'])+' Board']))
         # Check for a winner
         winner = isWinner(game)
-        # Swap the active player
-        game['Who'] = game['Who']%2 + 1
         # Save the game state
         saveGame(game, filename)
     # Once the game finishes, tell the player who the winner is
