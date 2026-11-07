@@ -456,7 +456,78 @@ def suggestMove(board): #similar to task 8
 
 ###############################################################################
 # Task 12
-
+def playGame():
+    '''
+    Parameters: none
+    Returns: none
+    Exceptions: Throws none and catches all
+    
+    Playes the game by taking input directly from the user
+    '''
+    # Ask for Player1's name
+    player1 = str(input('What is Player1\'s name?\n'))
+    # If Player1's name is 'load', get the name of the file and load the game
+    if (player1 == 'load'):
+        game = loadGame(str(input('What is the name of the file that you would like to load?\n')))
+    # Otherwise ask for Player2's name, make a new game and place the subs
+    else:
+        game = newEmptyGame(player1, str(input('What is Player2\'s name?\n')))
+        # Place the submarines
+        for j in range(2): # For each player
+            print(game['Player '+str(j+1)]+' is placing their subs on their board')
+            for i in range(5): # For each sub. Note: i == x means sub x+1 is being placed now
+                # Calculates the sub's length from i directly.
+                if (i <= 2): 
+                    subLength = 5-i
+                else:
+                    subLength = 6-i
+                # Places the sub 
+                placed = False
+                while not placed:
+                    print('Sub '+str(i+1)+' with length '+str(subLength)+' is to be placed')
+                    place = str(input('Where do want one end of your sub to be?\n'))
+                    d = str(input('What direction do you want your sub to face?\n'))
+                    try:
+                        placeSubs(game['Player '+str(j+1)+' Board'],'S'+str(i+1), {'anchor': place, 'direction': d.lower(), 'length': subLength})
+                    except InvalidInputFormat: # Only happens if either the anchor or the direction are in the wrong format
+                        print('Your input doesn\'t make sense')
+                        print('For the end of your sub, give it in the coordinates xXn, where x is a lower case letter, X is an uppercase letter and n is a 1-digit number')
+                        print('For the direction the sub points in, make sure it is one of the following: up, down, left, right, forwards, backwards')
+                    except OutOfBoundsError:
+                        print('Your submarine will end up out of bounds. Remember that the board is a 5x5x5 grid')
+                    except SubmarineOverlapError:
+                        print('This submarine will end up overlapping with one that you have already placed. Try again')
+                    # If none of the exceptions are thrown, then the sub was placed successfuly
+                    else:
+                        placed = True
+    # Start the game
+    winner = 0
+    while (winner == 0):
+        # Ask for a move / Suggest a move
+        print('It is '+ game['Player '+str(game['Who'])]+'\'s turn')
+        # If the player is a computer, make a move using the suggested move
+        if (game['Player '+str(game['Who'])] == 'C'):
+            game = makeMove(game, suggestMove(game['Player '+str(game['Who']%2 + 1)+' Board']))
+        # Otherwise let the player make a move
+        else:
+            moveMade = False
+            while (not moveMade):
+                try:
+                    game = makeMove(game, str(input('Where do you want to aim at?\n')))
+                except MoveNotMade:
+                    print('The move could not be made')
+                    print('Give the move in the form xXn. Where x is a lowercase letter, X is an uppercase letter, and n is a 1-digit number')
+                    print('You may have already shot there, try a different square')
+                else:
+                    moveMade = True
+        # Print the new game board
+        print(printBoard(game['Player '+ str(game['Who']%2 + 1)+' Board']))
+        # Check for a winner
+        winner = isWinner(game)
+        # Swap the active player
+        game['Who'] = game['Who']%2 + 1
+    # Once the game finishes, tell the player who the winner is
+    print(game['Player '+str(winner)]+' has won the game')
 ###############################################################################
 
 ###############################################################################
