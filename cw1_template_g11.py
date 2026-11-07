@@ -468,10 +468,12 @@ def playGame():
     player1 = str(input('What is Player1\'s name?\n'))
     # If Player1's name is 'load', get the name of the file and load the game
     if (player1 == 'load'):
-        game = loadGame(str(input('What is the name of the file that you would like to load?\n')))
+        filename = str(input('What is the name of the file that you would like to load?\n'))
+        game = loadGame(filename)
     # Otherwise ask for Player2's name, make a new game and place the subs
     else:
         game = newEmptyGame(player1, str(input('What is Player2\'s name?\n')))
+        filename = str(input('What is the name of the file that you would like to save to?\n'))
         # Place the submarines
         for j in range(2): # For each player
             print(game['Player '+str(j+1)]+' is placing their subs on their board')
@@ -526,6 +528,8 @@ def playGame():
         winner = isWinner(game)
         # Swap the active player
         game['Who'] = game['Who']%2 + 1
+        # Save the game state
+        saveGame(game, filename)
     # Once the game finishes, tell the player who the winner is
     print(game['Player '+str(winner)]+' has won the game')
 ###############################################################################
