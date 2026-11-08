@@ -267,7 +267,17 @@ def indexToPos(ind):
 # Task 6
 
 def saveGame(game, fname):
+    '''
+    Input:  game  [dict] the current game, including both boards, player names, whose turn is next and the ShowSubs setting.
     
+            fname [str]  the filename or path to save the game to
+
+    Output: [none] save the game as a CSV file and replaces any file already saved at fname
+
+    Exceptions: Standard file errors can pop up if fname cannot be opened or written
+    
+    '''
+  
     with open(fname, 'w', newline='') as gamefile:
         writer = csv.writer(gamefile)
         writer.writerow(['Player 1', game['Player 1']])
@@ -288,6 +298,14 @@ def saveGame(game, fname):
 # Task 7
 
 def loadGame(fname):
+  '''
+    Input:fname [str] the filename or path of a saved game CSV file, in the format used by saveGame
+
+    Output: [dict] the game rebuilt from the file, with player names, whose turn is next, ShowSubs, and both boards
+
+    Exceptions: Standard file errors may occur if fname cannot be opened, and  invalid or incomplete file contents may cause an error
+    '''
+  
     #we want to reverse the csv back into the game dict
     with open(fname, 'r', newline='') as gamefile:
         rows = [] #rows --> list of rows
@@ -324,6 +342,15 @@ def loadGame(fname):
 # Task 8
 
 def findValidMoves(board):
+  '''
+    Input:  board [list] a 5x5x5 game board, indexed as board[k][j][i]
+
+    Output: [list] positions for every cube that has not been fired at yet. These are cells containing 0 or an unhit submarine ('S1' to 'S5'). 
+    Positions are returned in level, row and column order, in the form 'Xxn', X is in ABCDE, x is in abcde, and n is from 1 to 5
+
+    Exceptions: [none] for a valid game board
+    '''
+
     moves = []
     for k in range(5):
         for j in range(5):
@@ -446,6 +473,17 @@ def isWinner(game):
 # Task 11
 
 def suggestMove(board): #similar to task 8
+  '''
+    Input:  board [list] a 5x5x5 game board, indexed as board[k][j][i]
+
+    Output: [str] one position that has not been fired at yet, in the form
+                   'Xxn'. The function picks the first available position.
+                   If no positions are available, it returns None
+
+    Exceptions: [none] for a valid game board. Generally, similar comments to
+    task 8.
+    '''
+
     moves = findValidMoves(board)
     if moves:
         return moves[0] #gives the first available, possible move
