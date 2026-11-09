@@ -171,7 +171,7 @@ def placeSubs(board, name, pos):
 
 def printBoard(board, showSubs=False, showSubNum=False):
   '''
-  Input:  board [list] a 5x5 game board with index [k][j][i].
+  Input:  board [list] a 5x5x5 game board with index [k][j][i].
           showSubs [bool] whether submarines are shown on the board. 
           showSubNum [bool] whether submarine numbers are displayed. 
           Both optional arguments default to False.
@@ -181,7 +181,7 @@ def printBoard(board, showSubs=False, showSubNum=False):
            If showSubNum is False - submarine numbers are not displayed.
            Empty cubes are represented by blank spaces.
            
-  Expectations: [none] for a valid game board.
+  Exceptions: [none] for a valid game board.
   '''
   lines = []
   titles = []
